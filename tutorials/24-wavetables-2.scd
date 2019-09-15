@@ -1,3 +1,12 @@
+s.boot;
+s.quit;
+s.scope;
+FreqScope.new;
+
+// This tutorial is about morphing between multiple wavetables
+// In a musical piece, we don't want a hard cut between different wavetables
+// VOsc is designed to morph/mix between different wavetables
+// First we need at least 2 wavetables
 (
 ~wt0 = Signal.sineFill(
     1024,
@@ -15,17 +24,38 @@
 ~wt0.plot;
 ~wt1.plot;
 
-// (
-// ~b0 = Buffer.loadCollection(s, ~wt0);
-// ~b1 = Buffer.loadCollection(s, ~wt1);
-// )
+// Load them into buffers on the local server
+(
+~b0 = Buffer.loadCollection(s, ~wt0);
+~b1 = Buffer.loadCollection(s, ~wt1);
+)
 
-// (
-// {
-//     var sig;
-//     sig = VOsc.ar(MouseX.kr(0,1), 300, mul:0.2!2);
-// }.play;
-// )
+// And now play them
+(
+{
+  var sig;
+  // morph between bufnum 0 and 1 using the mouse
+  sig = VOsc.ar(MouseX.kr(0,1), 300, mul:0.2!2);
+}.play;
+)
+
+// let's use a SynthDef to clean things up and make it more flexible
+
+(
+  SynthDef(\vosc, { | out=0 |
+    var sig, bufpos;
+    bufpos = MouseX.kr(0,1);
+    sig = VOsc.ar(bufpos, 300, mul:0.2!2);
+    Out.ar(out, sig);
+  }).add;
+)
+
+Synth(\vosc);
+
+// Note: all the buffers VOsc uses must be the same size
+// but this is still sloppy because we have to hardcode the actual bufnums
+
+~buf = Buffer.allocConsecutive(4, s, 2048);
 
 (
 ~wt = Array.fill(4, {
@@ -37,8 +67,6 @@
     ).asSignal(1024).asWavetable;
 });
 )
-
-~buf = Buffer.allocConsecutive(4, s, 2048);
 
 (
 ~buf.do({
