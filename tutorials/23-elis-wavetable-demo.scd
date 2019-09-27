@@ -31,7 +31,7 @@ s.waitForBoot({
 
 			//low-index wavetables tend to be sinusoidal
 			//high index wavetables tend to have sharp angles and corners
-			{[\sine,0,exprand(1,20) * [1,-1].choose].wchoose([9-i,3,i].normalizeSum)}.dup(numSegs)
+			{[\sine,0,exprand(1,20) * [1,-1].choose].wchoose([9-i,3,i].normalizeSum)}.dup(numSegs);
 		).asSignal(1024);
 	});
 
@@ -298,7 +298,7 @@ s.waitForBoot({
 )
 
 //view wavetables
-~wt_sig.reverseDo(_.plot(name:'sc:wables'));
+~wt_sig.reverseDo(_.plot);
 
 (
 //can stop individually or all at once
