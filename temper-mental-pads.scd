@@ -28,30 +28,28 @@ s.plotTree;
   ).plot;
 )
 
-Scale.directory;
-(1..12).choose;
-Scale.minorPentatonic.degrees;
-
 (
   SynthDef(\pads, {
     arg freq=300, amp=0.3, numSegs=4;
     var sig, env;
-    // amp = SinOsc.kr({ExpRand(2,8)}!6).range(0,1);
+    // amp = SinOsc.kr({ExpRand(2,4)}!4).range(0,1);
     sig = SinOsc.ar({Scale.minorPentatonic.degreeToFreq(Scale.minorPentatonic.degrees.choose, freq, 1)}!4);
     env = EnvGen.kr(Env.new(
-      [0]++({exprand(0.1,0.9)}!7)++[0],
-      {exprand(1,2.5)}!4,
+      [0]++({exprand(0.1,1.6)}!7)++[0],
+      {exprand(1,2.5)}!8,
       \sin), doneAction:2
     );
     sig = sig * env;
     sig = sig * amp;
     sig = Splay.ar(sig) * 0.5;
-    sig = FreeVerb.ar(sig, 0.2);
+    sig = FreeVerb.ar(sig, 0.3);
     Out.ar(0, sig);
   }).add;
 )
 
-x = Synth(\pads, [\freq, 52.midicps]);
+x = Synth(\pads, [\freq, 32.midicps]);
+
+// These aren't relevant with a doneAction of 2
 x.play;
 x.stop;
 x.free;
