@@ -51,7 +51,8 @@ Scale.minorPentatonic.degrees;
   }).add;
 )
 
-x = Synth(\pads, [\freq, 52.midicps]);
+x = Synth(\pads);
+x.set(\freq, 52.midicps);
 x.play;
 x.stop;
 x.free;

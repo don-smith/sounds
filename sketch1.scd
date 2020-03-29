@@ -4,7 +4,7 @@ s.scope;
 FreqScope.new;
 
 //initialization
-t = TempoClock.new(90/60).permanent_(true);
+t = TempoClock(90/60).permanent_(true);
 s.newBusAllocators;
 ~rbus = Bus.audio(s,2);
 Synth(\reverb, [\in, ~rbus]);
