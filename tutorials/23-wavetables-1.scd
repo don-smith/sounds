@@ -51,7 +51,7 @@ b.plot('sc:buffer');
 {Osc.ar(b, MouseX.kr(10, 10000, 1), mul:0.2!2)}.play;
 // and with the right channel one octive higher and slightly detuned
 {Osc.ar(b, MouseX.kr(10, 10000, 1)*[1,2.01], mul:0.2!2)}.play;
-
+s.freeAll;
 
 ///////////////////////////////////////////////////////////
 
@@ -118,6 +118,7 @@ b.plot('sc:buffer');
 b.plot('sc:buffer');
 
 {Osc.ar(b, MouseX.kr(10, 10000, 1)*[1,2.01], mul:0.2!2)}.play;
+s.freeAll;
 
 
 ///////////////////////////////////////////////////////////

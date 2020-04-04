@@ -21,3 +21,4 @@ FreqScope.new;
 )
 
 x = Synth(\sound, [\freq, 32.midicps]);
+x.free;
