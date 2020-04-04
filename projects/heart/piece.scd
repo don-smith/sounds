@@ -96,30 +96,33 @@ s.waitForBoot({
     Out.ar(out, sig);
     Out.ar(rout, sig * rsend.dbamp); //"post-fader" send to reverb
   }).add;
+
+  Pdef(\pads,
+    Pbind(
+      \instrument, \osc,
+      \dur, Pwrand([1,4,6,9,12],[0.35,0.25,0.2,0.15,0.05],inf),
+      \atk, Pexprand(3,6),
+      \sus, 0,
+      \rel, Pexprand(5,10),
+      \c0, Pexprand(1,2),
+      \c1, Pexprand(1,2).neg,
+      \root, 1,
+      \detune, Pfunc({rrand(0.15,0.4)}!3),
+      \buf, Prand(~wtBuffers[0..3], inf),
+      \scale, Scale.minorPentatonic,
+      \degree, Pfunc({ (-12,-10..12).scramble[0..rrand(1,3)] }),
+      \amp, Pexprand(0.05,0.07),
+      \pan, Pwhite(-0.4,0.4),
+      \out, ~out,
+      \rout, ~rbus,
+      \rsend, -10,
+    )
+  );
 })
 )
-(
-  Pbindef(\pad,
-    \instrument, \osc,
-    \dur, Pwrand([1,4,6,9,12],[0.35,0.25,0.2,0.15,0.05],inf),
-    \atk, Pexprand(3,6),
-    \sus, 0,
-    \rel, Pexprand(5,10),
-    \c0, Pexprand(1,2),
-    \c1, Pexprand(1,2).neg,
-    \root, 1,
-    \detune, Pfunc({rrand(0.15,0.4)}!3),
-    \buf, Prand(~wtBuffers[0..3], inf),
-    \scale, Scale.minorPentatonic,
-    \degree, Pfunc({ (-12,-10..12).scramble[0..rrand(1,3)] }),
-    \amp, Pexprand(0.05,0.07),
-    \pan, Pwhite(-0.4,0.4),
-    \out, ~out,
-    \rout, ~rbus,
-    \rsend, -10,
-  ).play(t, quant:1);
-)
 
-{Rand(0,2pi)}.value!4;
 ~wavetables.reverseDo(_.plot);
-Pbindef(\pad).stop;
+
+Pdef(\pads).play(t, quant:1);
+Pdef(\pads).set(\root, 2);
+Pdef(\pads).stop;
