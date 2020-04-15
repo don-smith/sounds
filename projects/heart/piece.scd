@@ -96,7 +96,33 @@ s.waitForBoot({
     Out.ar(out, sig);
     Out.ar(rout, sig * rsend.dbamp); //"post-fader" send to reverb
   }).add;
-
+})
+)
+(
+  // Pdef(\bass,
+    p = Pbind(
+      \instrument, \osc,
+      \dur, 1/2,
+      \freq, 70,
+      \atk, 0,
+      \sus, 0,
+      \rel, Pexprand(1.5,2.7),
+      \c0, Pexprand(1,2),
+      \c1, Pexprand(1,2).neg,
+      \detune, Pseq(0!3, inf),
+      \buf, Prand(~wtBuffers[0..2], inf),
+      \scale, Scale.minorPentatonic,
+      // \degree, Pfunc({ (-12,-10..12).scramble[0..rrand(1,3)] }),
+      \amp, Pexprand(0.05,0.07),
+      \pan, 0, //Pwhite(-0.4,0.4),
+      \out, ~out,
+      \rout, ~rbus,
+      \rsend, -10,
+    ).play(t, quant:1)
+  // );
+)
+p.stop;
+(
   Pdef(\pads,
     Pbind(
       \instrument, \osc,
@@ -118,11 +144,49 @@ s.waitForBoot({
       \rsend, -10,
     )
   );
-})
 )
 
 ~wavetables.reverseDo(_.plot);
 
 Pdef(\pads).play(t, quant:1);
+Pdef(\bass).play(t, quant:1);
+// set doesn't seem to work as I'd expect
 Pdef(\pads).set(\root, 2);
+Pdef(\pads).set(\dur, Pexprand(1,1));
 Pdef(\pads).stop;
+Pdef(\bass).stop;
+
+// This is starting to sound like a worthy bass tone
+(
+SynthDef(\fm, {
+  | freq=500, mRatio=1, cRatio=1, index=1, iScale=5,
+    atk=0.01, rel=3, amp=0.2, cAtk=4, cRel=(-4), pan=0 |
+  var car, mod, env, iEnv;
+  iEnv = EnvGen.kr(
+    Env.new(
+      [index, index * iScale, index],
+      [atk, rel],
+      [cAtk, cRel]
+    )
+  );
+  env = EnvGen.kr(
+    Env.perc(atk, rel, curve:[cAtk, cRel]),
+    doneAction: 2
+  );
+  mod = SinOsc.ar(freq * mRatio, mul:freq * mRatio * iEnv);
+  car = SinOsc.ar(freq * cRatio + mod) * env * amp;
+  car = Pan2.ar(car, pan);
+  Out.ar(0, car);
+}).add;
+)
+
+(
+Synth(\fm, [
+  \freq, 36.midicps,
+  \atk, 0.3,
+  \rel, 2,
+  \index, 11,
+  \iScale, 0.05,
+  \mRatio, 0.4
+])
+)

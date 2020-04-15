@@ -46,9 +46,11 @@ SynthDef(\fm, {
 
 (
 Synth(\fm, [
-  \freq, 66.midicps,
+  \freq, 26.midicps,
   \cRatio, 5,
-  \mRatio, 2
+  \mRatio, 2,
+  \modAmp, 800,
+  \rel, 1.35
 ])
 )
 
@@ -72,9 +74,10 @@ SynthDef(\fm, {
 
 (
 Synth(\fm, [
-  \freq, 66.midicps,
+  \freq, 27.midicps,
   // the index now allows us to directly define the number of sidebands
-  \index, 4 // aka complexity of the sound
+  \index, 46, // aka complexity of the sound
+  \rel, 1.35
 ])
 )
 
@@ -108,9 +111,10 @@ SynthDef(\fm, {
 (
 Synth(\fm, [
   \freq, 36.midicps,
-  \rel, 4,
-  \index, 20,
+  \atk, 0.3,
+  \rel, 2,
+  \index, 11,
   \iScale, 0.05,
-  \mRatio, 0.5
+  \mRatio, 0.4
 ])
 )
