@@ -6,7 +6,7 @@ s.boot;
     sig1 = sig + SinOsc.ar({Rand(185,197)}!2, 0, 0.3);
     sig2 = sig + SinOsc.ar({Rand(335,340)}!2, 0, 0.3);
     pan = FBSineC.ar(1, 2, 1.7); // panning movement - use wavetable instead
-    sig = XFade2.ar(sig1, sig2, pan, 0.5);
+    sig = XFade2.ar(sig1, sig2, pan, {Rand(0.1,0.4)});
   }.play;
 )
 

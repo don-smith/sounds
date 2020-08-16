@@ -1,3 +1,5 @@
+s.options.numOutputBusChannels = 4;
+
 (
 //cleanup
 Pdef.all.do(_.clear);
@@ -10,10 +12,9 @@ ServerTree.remove(~add_reverb);
 s = Server.local;
 t = TempoClock.new(90/60).permanent_(true);
 s.newBusAllocators;
-~rbus = Bus.audio(s,2);
+~rbus = Bus.audio(s,4);
 
 s.waitForBoot({
-
 	//10 wavetables with increasing complexity
 	~wt_sig = 10.collect({
 		arg i;
@@ -43,7 +44,7 @@ s.waitForBoot({
 
 	SynthDef(\osc, {
 		arg buf=0, freq=200, detune=0.2,
-		amp=0.2, pan=0, out=0, rout=0, rsend=(-20),
+		amp=0.01, pan=0, out=0, rout=0, rsend=(-20),
 		atk=0.01, sus=1, rel=0.01, c0=1, c1=(-1);
 		var sig, env, detuneCtrl;
 		env = EnvGen.ar(
@@ -55,10 +56,10 @@ s.waitForBoot({
 		//and unique initial phase offsets
 		detuneCtrl = LFNoise1.kr(0.1!8).bipolar(detune).midiratio;
 		sig = Osc.ar(buf, freq * detuneCtrl, {Rand(0,2pi)}!8);
-
-		sig = Splay.ar(sig); //spread 8 signals over stereo field
-		sig = LeakDC.ar(sig); //remove DC bias
-		sig = Balance2.ar(sig[0], sig[1], pan, amp); //L/R balance (pan)
+    //sig = SplayAz.ar(4, sig, MouseX.kr(0, 1) * 0.3); //spread 8 signals over stereo field
+    sig = PanAz.ar(4, sig, LFSaw.kr(0.05), 0.01, width:2);
+		//sig = Balance2.ar(sig[0], sig[1], pan, amp); //L/R balance (pan)
+    sig = LeakDC.ar(sig); //remove DC bias
 		sig = sig * env;
 		Out.ar(out, sig);
 		Out.ar(rout, sig * rsend.dbamp); //"post-fader" send to reverb
@@ -70,7 +71,7 @@ s.waitForBoot({
 		sig = In.ar(in, 2).sum;
 		sig = DelayN.ar(sig, 0.03, 0.03);
 		sig = CombN.ar(sig, 0.1, {Rand(0.01,0.099)}!32, dec);
-		sig = SplayAz.ar(2, sig);
+		sig = SplayAz.ar(4, sig);
 		sig = LPF.ar(sig, lpf);
 		5.do{sig = AllpassN.ar(sig, 0.1, {Rand(0.01,0.099)}!2, 3)};
 		sig = LPF.ar(sig, lpf);

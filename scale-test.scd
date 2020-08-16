@@ -15,7 +15,7 @@ Scale.minorPentatonic.degrees;
     sig = sig * env;
     sig = sig * amp;
     sig = Splay.ar(sig) * 0.5;
-    sig = FreeVerb.ar(sig, 0.3);
+    sig = FreeVerb.ar(sig, 0.1);
     Out.ar(0, sig);
   }).add;
 )

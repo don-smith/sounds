@@ -1,5 +1,7 @@
 // Start interpreter with :SClangStart
 s.boot;
+s.quit;
+s.options.numOutputBusChannels = 4;
 
 // The original from the previous tutorial
 (
@@ -15,26 +17,30 @@ z = {
 // Define the SynthDef version
 (
 SynthDef(\sineTest, {
-    arg noiseHz=8;
-    var freq, amp, sig;
+    arg noiseHz=8, out=0, amp=0.01;
+    var freq, sig;
     freq = LFNoise0.kr(noiseHz).exprange(200,1000);
-    amp = LFNoise0.kr(12).exprange(0.21,0.3);
+    amp = LFNoise0.kr(12).exprange(0.21,0.3) * amp;
     sig = SinOsc.ar(freq, mul:amp);
-    Out.ar(0, sig);
+    Out.ar(out, sig);
 }).add;
 )
 
 // Use the SynthDef
-x = Synth(\sineTest);
+x = Synth(\sineTest, [\out, 0, \amp, 0.5]);
+y = Synth(\sineTest, [\out, 1, \amp, 0.5]);
+z = Synth(\sineTest, [\out, 2, \amp, 0.5]);
+w = Synth(\sineTest, [\out, 3, \amp, 0.5]);
 x.set(\noiseHz, 5)
+x.set(\amp, 0.50)
 x.free;
 
 (
   SynthDef(\pulseTest, {
     arg ampHz=4, fund=40, maxPartial=4, width=0.5;
     var amp1, amp2, freq1, freq2, sig1, sig2;
-    amp1 = LFPulse.kr(ampHz, 0, 0.12) * 0.75;
-    amp2 = LFPulse.kr(ampHz, 0.5, 0.12) * 0.75;
+    amp1 = LFPulse.kr(ampHz, 0, 0.12) * 0.05;
+    amp2 = LFPulse.kr(ampHz, 0.5, 0.12) * 0.05;
     freq1 = LFNoise0.kr(4).exprange(fund, fund*maxPartial).round(fund);
     freq2 = LFNoise0.kr(4).exprange(fund, fund*maxPartial).round(fund);
     freq1 = freq1 * LFPulse.kr(8, add:1);
