@@ -1,11 +1,14 @@
 s.boot;
 s.quit;
 
-// This does not seem to work in SCVim, but it
-// does work in the official SuperCollider IDE
+
+// This works in SCVim
+"/home/don/Music/sounds/sketches/loadtest/synth.sc".load;
 
 (
-  // "/home/don/Music/sounds/loadtest/synth.scd".load;
-  "./synth.scd".resolveRelative.load;
+  // These do not work in SCVim, but they do
+  // work in the official SuperCollider IDE
+  "./synth.sc".resolveRelative.load;
+  // ("./synth.sc").loadRelative;
   Synth(\testsynth);
 )
