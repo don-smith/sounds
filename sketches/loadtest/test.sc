@@ -1,5 +1,5 @@
-s.quit;
 s.boot;
+s.quit;
 
 // This does not seem to work in SCVim, but it
 // does work in the official SuperCollider IDE

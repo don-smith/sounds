@@ -1,8 +1,7 @@
 s.boot;
-s.start;
 s.stop;
 
-~filePath = "/home/don/Music/projects/supersampling1/et.wav";
+~filePath = "/home/don/Music/sounds/sketches/sampling/et.wav";
 
 ~b0 = Buffer.read(s, ~filePath);
 ~b0.play;

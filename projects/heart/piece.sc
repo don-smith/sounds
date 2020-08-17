@@ -99,8 +99,8 @@ s.waitForBoot({
 })
 )
 (
-  // Pdef(\bass,
-    p = Pbind(
+  Pdef(\bass,
+    Pbind(
       \instrument, \osc,
       \dur, 1/2,
       \freq, 70,
@@ -117,9 +117,9 @@ s.waitForBoot({
       \pan, 0, //Pwhite(-0.4,0.4),
       \out, ~out,
       \rout, ~rbus,
-      \rsend, -10,
-    ).play(t, quant:1)
-  // );
+      \rsend, -10
+    )
+  );
 )
 p.stop;
 (
@@ -141,7 +141,7 @@ p.stop;
       \pan, Pwhite(-0.4,0.4),
       \out, ~out,
       \rout, ~rbus,
-      \rsend, -10,
+      \rsend, -10
     )
   );
 )
