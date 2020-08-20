@@ -1,10 +1,5 @@
 // Frequency Modulation
 
-s.boot;
-s.quit;
-s.scope;
-FreqScope.new;
-
 //initialization
 t = TempoClock(90/60).permanent_(true);
 s.newBusAllocators;
@@ -42,7 +37,7 @@ SynthDef(\fm1, {
 )
 
 (
-Pbindef( \fmp1,
+Pbindef(\fmp1,
   \instrument, \fm1,
   \dur, Pexprand(3, 7),
   \carHz, Pexprand(20, 800),

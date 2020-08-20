@@ -1,5 +1,3 @@
-s.boot;
-
 // Steps for creating a new instrument
 
 // 1. Start with a SynthDef

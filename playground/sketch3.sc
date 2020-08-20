@@ -1,8 +1,4 @@
 // Adding and multiplying SinOsc UGens
-
-s.scope;
-FreqScope.new;
-
 (
   SynthDef(\sound, {
     arg freq=300, amp=0.3, numSegs=4;

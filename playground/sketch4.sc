@@ -1,11 +1,4 @@
 // Playing with envelopes
-
-s.boot;
-s.quit;
-
-s.scope;
-FreqScope.new;
-
 (
   Env.new(
     [0,1,0],

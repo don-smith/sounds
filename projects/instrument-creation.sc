@@ -1,5 +1,3 @@
-s.boot;
-
 // Steps for creating a new instrument
 
 // 1. Start with a SynthDef
@@ -17,7 +15,7 @@ SynthDef(\sineTest, {
   sig = SinOsc.ar(freq, mul:amp);
   sig = sig * env;
   // Prepare the signal
-  sig = Splay.ar(sig) * 0.6;
+  sig = PanAz.ar(numChans:4, in:sig) * 0.6;
   sig = FreeVerb.ar(sig, 0.7, 0.8, 0.25);
   // Output the signal
   Out.ar(0, sig);
@@ -40,7 +38,7 @@ x.free;
 (
   ~mp = Scale.minorPentatonic;
   x = Synth(\sineTest, [
-    \fund, ~mp.degreeToFreq(~mp.degrees.choose, 33.midicps, [0,1,2,3].choose),
+    \fund, ~mp.degreeToFreq(~mp.degrees.choose, 8.midicps, [0,1,2,3].choose),
     \maxPartials, exprand(2, 10),
     \freqHz, exprand(2, 6),
     \ampHz, exprand(2, 10)
@@ -55,7 +53,5 @@ x.free;
   ).play(t, quant:4);
 )
 p.stop;
-
-
 
 s.freeAll;

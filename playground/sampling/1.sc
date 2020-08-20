@@ -1,7 +1,4 @@
-s.boot;
-s.stop;
-
-~filePath = "/home/don/Music/sounds/sketches/sampling/et.wav";
+~filePath = "/home/don/music/sc/playground/sampling/et.wav";
 
 ~b0 = Buffer.read(s, ~filePath);
 ~b0.play;

@@ -1,10 +1,5 @@
 // Frequency Modulation
 
-s.boot;
-s.quit;
-s.scope;
-FreqScope.new;
-
 //initialization
 t = TempoClock.new(90/60).permanent_(true);
 s.newBusAllocators;
@@ -66,7 +61,7 @@ Synth(\fm2, [
 )
 
 (
-Pbindef( \fmp2,
+Pbindef(\fmp2,
   \instrument, \fm2,
   \freq, 36.midicps,
   \rel, 4,

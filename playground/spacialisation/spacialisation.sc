@@ -1,34 +1,24 @@
-// Start interpreter with :SClangStart
-s.options.numOutputBusChannels = 4;
-s.boot;
-s.quit;
-s.meter;
-s.plotTree;
-s.freeAll;
-
 (
   //initialization
   s.newBusAllocators;
   ~circpanbus = Bus.audio(s,1);
   ~randpanbus = Bus.audio(s,1);
-  // ~circpanbus;
-  // ~randpanbus;
 )
 
 (
 SynthDef(\bpfsaw, {
-    arg atk=2, sus=0, rel=3, c1=1, c2=(-1), freq=500, detune=0.2,
-      cfmin=500, cfmax=2000, rqmin=0.1, rqmax=0.2, amp=1, out=0;
-    var sig, env;
-    env = EnvGen.kr(Env([0,1,1,0],[atk,sus,rel],[c1,0,c2]),doneAction:2);
-    sig = Saw.ar(freq * LFNoise1.kr(0.5,detune).midiratio);
-    sig = BPF.ar(
-        sig,
-        LFNoise1.kr(0.2).exprange(cfmin, cfmax),
-        LFNoise1.kr(0.1).exprange(rqmin, rqmax)
-    );
-    sig = sig * env * amp;
-    Out.ar(out, sig);
+  arg atk=2, sus=0, rel=3, c1=1, c2=(-1), freq=500, detune=0.2,
+    cfmin=500, cfmax=2000, rqmin=0.1, rqmax=0.2, amp=1, out=0;
+  var sig, env;
+  env = EnvGen.kr(Env([0,1,1,0],[atk,sus,rel],[c1,0,c2]),doneAction:2);
+  sig = Saw.ar(freq * LFNoise1.kr(0.5,detune).midiratio);
+  sig = BPF.ar(
+    sig,
+    LFNoise1.kr(0.2).exprange(cfmin, cfmax),
+    LFNoise1.kr(0.1).exprange(rqmin, rqmax)
+  );
+  sig = sig * env * amp;
+  Out.ar(out, sig);
 }).add;
 
 SynthDef(\circpanner, {
@@ -46,29 +36,13 @@ SynthDef(\randpanner, {
   sig = PanAz.ar(4, sig, LFNoise1.kr(panspeed));
   Out.ar(out, sig);
 }).add;
-
-~fxGrp.free;
-~fxGrp = Group.new;
-~circpanner = Synth(\circpanner, [ in: ~circpanbus ], ~fxGrp);
-~randpanner = Synth(\randpanner, [ in: ~randpanbus ], ~fxGrp);
 )
 
 (
-  ~randpanner.set(\panspeed, 0.4);
-  ~circpanner.set(\panspeed, 0.1, \pandir, [-1, 1].choose);
-  Synth(\bpfsaw, [
-    freq: 30,
-    detune: 4,
-    // rqmin: 0.005,
-    // rqmax: 0.008,
-    cfmin: 50*2,
-    cfmax: 50*10,
-    atk: 1,
-    sus: 7,
-    rel: 5,
-    amp: 1,
-    out: ~circpanbus,
-  ]);
+~fxGrp.free;
+~fxGrp = Group.new(\panners);
+~circpanner = Synth(\circpanner, [ in: ~circpanbus ], ~fxGrp);
+~randpanner = Synth(\randpanner, [ in: ~randpanbus ], ~fxGrp);
 )
 
 (
@@ -113,34 +87,54 @@ SynthDef(\randpanner, {
 ~pads.stop;
 ~marimba.stop;
 
+// The rest of the file is just experimenting
+
+(
+  ~randpanner.set(\panspeed, 0.4);
+  ~circpanner.set(\panspeed, 0.1, \pandir, [-1, 1].choose);
+  Synth(\bpfsaw, [
+    freq: 30,
+    detune: 4,
+    // rqmin: 0.005,
+    // rqmax: 0.008,
+    cfmin: 50*2,
+    cfmax: 50*10,
+    atk: 1,
+    sus: 7,
+    rel: 5,
+    amp: 1,
+    out: ~circpanbus,
+  ]);
+)
+
 (
 10.do {
-    Synth(\bpfsaw,
-        [
-            \freq, 20,
-            \amp, 0.5,
-            \detune, 1,
-            \cfmin, 20*40,
-            \cfmax, 20*50,
-            \pan, 0
-        ]
-    );
+  Synth(\bpfsaw,
+    [
+      \freq, 20,
+      \amp, 0.5,
+      \detune, 1,
+      \cfmin, 20*40,
+      \cfmax, 20*50,
+      \pan, 0
+    ]
+  );
 };
 )
 
 // First set of settings
 (
 10.do {
-    Synth(\bpfsaw,
-        [
-            \freq, 50,
-            \amp, 0.4,
-            \cfmin, 50*2,
-            \cfmax, 50*50,
-            \rqmin, 0.005,
-            \rqmax, 0.03,
-            \pan, 0
-        ]
-    );
+  Synth(\bpfsaw,
+    [
+      \freq, 50,
+      \amp, 0.4,
+      \cfmin, 50*2,
+      \cfmax, 50*50,
+      \rqmin, 0.005,
+      \rqmax, 0.03,
+      \pan, 0
+    ]
+  );
 };
 )

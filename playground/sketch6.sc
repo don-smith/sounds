@@ -1,4 +1,3 @@
-s.boot;
 (
   {
     var sig, sig1, sig2, pan;

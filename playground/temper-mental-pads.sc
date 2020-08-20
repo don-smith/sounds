@@ -16,10 +16,6 @@
 // 3. Create a Pbindef that plays the instruments using the provided args in
 // expected ways ... and perhaps some unexpected ways.
 
-s.boot;
-s.quit;
-s.plotTree;
-
 (
   Env.new(
     [0]++({exprand(0.1,0.9)}!7)++[0],

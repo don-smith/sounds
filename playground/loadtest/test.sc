@@ -1,9 +1,5 @@
-s.boot;
-s.quit;
-
-
 // This works in SCVim
-"/home/don/Music/sounds/sketches/loadtest/synth.sc".load;
+"/home/don/music/sc/playground/loadtest/synth.sc".load;
 
 (
   // These do not work in SCVim, but they do
