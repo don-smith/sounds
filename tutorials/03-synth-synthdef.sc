@@ -26,11 +26,20 @@ SynthDef(\sineTest, {
 }).add;
 )
 
+(
+  SynthDef(\test, {
+    arg out=0.1;
+    var sig;
+    sig = SinOsc.ar(1000, mul:0.1);
+    Out.ar(out, sig);
+  }).add;
+)
+
 // Use the SynthDef
-x = Synth(\sineTest, [\out, 0, \amp, 0.5]);
-y = Synth(\sineTest, [\out, 1, \amp, 0.5]);
-z = Synth(\sineTest, [\out, 2, \amp, 0.5]);
-w = Synth(\sineTest, [\out, 3, \amp, 0.5]);
+x = Synth(\test, [\out, 0, \amp, 0.5]);
+y = Synth(\test, [\out, 1, \amp, 0.5]);
+z = Synth(\test, [\out, 2, \amp, 0.5]);
+w = Synth(\test, [\out, 3, \amp, 0.5]);
 x.set(\noiseHz, 5)
 x.set(\amp, 0.50)
 x.free;
