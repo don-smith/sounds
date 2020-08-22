@@ -29,7 +29,7 @@ Synth(\fm, [
   \carHz, exprand(20, 10000),
   \modHz, exprand(20, 10000),
   \modAmp, rrand(0, 10000),
-  \amp, exprand(0.1, 0.5),
+  \amp, exprand(0.1, 0.3),
   \atk, exprand(0.001, 0.05),
   \rel, exprand(0.05, 1.2),
   \pan, rrand(-1.0, 1.0),

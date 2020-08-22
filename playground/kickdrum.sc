@@ -16,7 +16,7 @@ SynthDef('kickdrum', {
   sig = sig + hit;
 
   // Prepare the signal
-  sig = Splay.ar(sig) * 0.6;
+  sig = Splay.ar(sig) * 0.4;
   // Output the signal
   Out.ar(0, sig);
 }).add;
@@ -30,7 +30,7 @@ Synth(\kickdrum);
 
 (
 Synth(\kickdrum, [
-  \hz, 33.midicps, // A: 21, 33, 45=110, 57, 69, 81, 93
+  \hz, 30.midicps, // A: 21, 33, 45=110, 57, 69, 81, 93
   \hitHZ, 900,
   \hitDur, 0.025
 ]);

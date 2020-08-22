@@ -1,26 +1,9 @@
 (
-// 0. clean up
-Pdef.all.do(_.clear);
-Pbindef.all.do(_.clear);
-~wtBuffers.do(_.free);
-t.stop;
-ServerTree.remove(~add_reverb);
+  // Clean up
+  ~wtBuffers.do(_.free);
 )
 
 (
-//1. server config
-s = Server.local;
-t = TempoClock.new(90/60).permanent_(true);
-s.options.numOutputBusChannels_(2);
-s.options.sampleRate_(44100);
-s.options.memSize_(2.pow(20));
-s.newBusAllocators;
-~rbus = Bus.audio(s,2);
-
-//2. initialize global variables
-~out = 0;
-
-s.waitForBoot({
   //10 wavetables with increasing complexity
   ~wavetables = 10.collect({
     arg i;
@@ -47,36 +30,12 @@ s.waitForBoot({
     arg buf, index;
     buf.setnMsg(0, ~wavetables[index].asWavetable);
   });
+)
 
-  SynthDef(\reverb, {
-    arg in, predelay=0.1, revtime=1.8,
-    lpf=4500, mix=0.15, amp=1, out=~out;
-    var dry, wet, temp, sig;
-    dry = In.ar(in,2);
-    temp = In.ar(in,2);
-    wet = 0;
-    temp = DelayN.ar(temp, 0,2, predelay);
-    16.do{
-      temp = AllpassN.ar(temp, 0.05, {Rand(0.001,0.05)}!2, revtime);
-      temp = LPF.ar(temp, lpf);
-      wet = wet + temp;
-    };
-    sig = XFade2.ar(dry, wet, mix*2-1, amp);
-    Out.ar(out, sig);
-  }).add;
-
-  s.sync;
-
-  //instantiate reverb and re-instantiate when cmd-period is pressed
-  ~add_reverb = {Synth(\reverb, [\in, ~rbus])};
-  ServerTree.add(~add_reverb);
-  s.freeAll;
-
-  s.sync;
-
+(
   SynthDef(\osc, {
     arg buf=0, freq=200, detune=0.2,
-    amp=0.2, pan=0, out=~out, rout=0, rsend=(-20),
+    amp=0.2, pan=0, out=0, rout=0, rsend=(-20),
     atk=0.01, sus=1, rel=0.01, c0=1, c1=(-1);
     var sig, env, detuneCtrl;
     env = EnvGen.ar(
@@ -89,15 +48,20 @@ s.waitForBoot({
     detuneCtrl = LFNoise1.kr(0.1!8).bipolar(detune).midiratio;
     sig = Osc.ar(buf, freq * detuneCtrl, {rrand(0,2pi)}!8);
 
-    sig = Splay.ar(sig); //spread 8 signals over stereo field
     sig = LeakDC.ar(sig); //remove DC bias
-    sig = Balance2.ar(sig[0], sig[1], pan, amp); //L/R balance (pan)
+    sig = PanAz.ar(4, sig, LFSaw.kr(0.05), 0.01, width:2);
     sig = sig * env;
     Out.ar(out, sig);
     Out.ar(rout, sig * rsend.dbamp); //"post-fader" send to reverb
   }).add;
-})
 )
+
+// Examples
+
+~wavetables.reverseDo(_.plot);
+t = TempoClock.new(90/60).permanent_(true);
+s.options.sampleRate_(44100);
+s.options.memSize_(2.pow(20));
 
 (
   Pbindef(\bass,
@@ -115,11 +79,12 @@ s.waitForBoot({
     // \degree, Pfunc({ (-12,-10..12).scramble[0..rrand(1,3)] }),
     \amp, Pexprand(0.05,0.07),
     \pan, 0, //Pwhite(-0.4,0.4),
-    \out, ~out,
-    \rout, ~rbus,
     \rsend, -10
   );
 )
+
+Pbindef(\bass).play(t, quant:1);
+Pbindef(\bass).stop();
 
 (
   Pbindef(\pads,
@@ -137,53 +102,65 @@ s.waitForBoot({
     \degree, Pfunc({ (-12,-10..12).scramble[0..rrand(1,3)] }),
     \amp, Pexprand(0.05,0.07),
     \pan, Pwhite(-0.4,0.4),
-    \out, ~out,
-    \rout, ~rbus,
     \rsend, -10
   );
 )
 
-~wavetables.reverseDo(_.plot);
-
 Pbindef(\pads).play(t, quant:1);
-Pbindef(\bass).play(t, quant:1);
-// set doesn't seem to work as I'd expect
-Pbindef(\pads).set(\root, 2);
-Pbindef(\pads).set(\dur, Pexprand(1,1));
-Pbindef(\pads).stop;
-Pbindef(\bass).stop;
-
-// This is starting to sound like a worthy bass tone
-(
-SynthDef(\fm, {
-  | freq=500, mRatio=1, cRatio=1, index=1, iScale=5,
-    atk=0.01, rel=3, amp=0.2, cAtk=4, cRel=(-4), pan=0 |
-  var car, mod, env, iEnv;
-  iEnv = EnvGen.kr(
-    Env.new(
-      [index, index * iScale, index],
-      [atk, rel],
-      [cAtk, cRel]
-    )
-  );
-  env = EnvGen.kr(
-    Env.perc(atk, rel, curve:[cAtk, cRel]),
-    doneAction: 2
-  );
-  mod = SinOsc.ar(freq * mRatio, mul:freq * mRatio * iEnv);
-  car = SinOsc.ar(freq * cRatio + mod) * env * amp;
-  car = Pan2.ar(car, pan);
-  Out.ar(0, car);
-}).add;
-)
+Pbindef(\pads).stop();
 
 (
-Synth(\fm, [
-  \freq, 36.midicps,
-  \atk, 0.3,
-  \rel, 2,
-  \index, 11,
-  \iScale, 0.05,
-  \mRatio, 0.4
-])
+	Pbindef(\pulse,
+		\instrument, \osc,
+		\dur, Pseq([
+			Pstutter(24,Pseq([1/4],1)),
+			Prand([1,2,4,6,12],1)
+		],inf),
+		\atk, 0.001,
+		\sus, 0,
+		\rel, Pexprand(0.4,1),
+		\c0, 0,
+		\c1, Pwhite(5,10).neg,
+		\detune, 0.3,
+		\buf, Prand(~wtBuffers[4..9], inf),
+		\scale, Scale.minorPentatonic,
+		\degree, Pseq([Prand([-15,-10,-5],24), Pseq([\],1)],inf)
+		+ Pstutter(25,Pwrand([0,2,-1],[0.78,0.1,0.12],inf)),
+		\amp, Pseq([Pgeom(0.45,-1.dbamp,25)],inf),
+		\pan, Pwhite(0.01,0.3) * Pseq([1,-1],inf)
+	);
 )
+
+Pbindef(\pulse).play(t, quant:1);
+Pbindef(\pulse).stop;
+
+(
+	Pbindef(\melody,
+		\instrument, \osc,
+		\dur, Prand([
+			Pseq([Prand([3,4,5]),2,1.5,0.5],1),
+			Pseq([Prand([3,4,5]),1.5,1,1.5],1),
+		],inf),
+		\atk, 0.01,
+		\sus, 0.3,
+		\rel, 1.5,
+		\c0, -2,
+		\c1, -2,
+		\detune, Pexprand(0.18,0.25),
+		\buf, Pwrand([
+			Pseq([~wtBuffers[0]],4),
+			Pseq([~wtBuffers[1]],4),
+			Pseq([~wtBuffers[2]],4),
+		],[9,3,1].normalizeSum,inf),
+		\midinote, Pxrand([
+			Pseq([\,67,60,Prand([58,70,\])],1),
+			Pseq([\,67,58,Prand([57,63,\])],1),
+			Pseq([\,70,72,Prand([65,79,\])],1)
+		],inf),
+		\amp, Pseq([0,0.18,0.24,0.28],inf)
+	);
+)
+
+// might take a while to start
+Pbindef(\melody).play(t, quant:1);
+Pbindef(\melody).stop;
