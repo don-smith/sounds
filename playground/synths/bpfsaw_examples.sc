@@ -1,12 +1,62 @@
 // Using /synths/bpfsaw.sc
 
 (
+  10.do{
+    Synth(\bpfsaw, [
+      \freq, 50,
+      \detune, 0, // 0 to disable detuning
+      \cfmin, 50*2,
+      \cfmax, 50*50,
+      \rqmin, 0.005,
+      \rqmax, 0.03,
+      \amp, 0.6,
+    ]);
+  }
+)
+
+(
+  10.do{
+    Synth(\bpfsaw, [
+      \midinote, [23,35,54,63,64],
+      \detune, 0.7, // 0 to disable detuning
+      \cfmin, ([23,35,54,63,64]).midicps*2,
+      \cfmax, ([23,35,54,63,64]).midicps*40,
+      \cfhzmin, 3,
+      \cfhzmax, 6,
+      \rqmin, 0.08,
+      \rqmax, 0.5,
+      \amp, 0.5,
+      \atk, 4,
+      \rel, 12,
+    ]);
+  }
+)
+
+(
   Pbindef(\ex1,
     \instrument, \bpfsaw,
-    \atk, 0.5,
-    \rel, 2,
-    \dur, Pseq([1, 0.5, 2], inf).trace,
-    \midinote, Pseq([60, 65, 67], inf).trace
+    \midinote, Pseq([
+      [23,35,54,63,64],
+      [45,52,54,59,61,64],
+      [28,40,47,56,59,63]
+    ]),
+    \detune, 0.3, // 0 to disable detuning
+    \cfmin, Pseq([
+      ([23,35,54,63,64]).midicps*2,
+      ([45,52,54,59,61,64]).midicps*2,
+      ([28,40,47,56,59,63]).midicps*2
+    ]),
+    \cfmax, Pseq([
+      ([23,35,54,63,64]).midicps*40,
+      ([45,52,54,59,61,64]).midicps*40,
+      ([28,40,47,56,59,63]).midicps*40
+    ]),
+    \rqmin, 0.05,
+    \rqmax, 0.3,
+    \amp, 0.6,
+    \atk, 2,
+    \rel, 8,
+    \dur, 5,
   )
 )
 
@@ -73,3 +123,28 @@ Pbindef(\ex3).stop;
 
 Pbindef(\ex4).play;
 Pbindef(\ex4).stop;
+
+(
+  ~ex5 = Pbind(
+    \instrument, \bpfsaw,
+    // \midinote, Pxrand([23,35,54,45,52,54,28,40,47], inf),
+    \scale, Scale.major,
+    \octave, 4,
+    \degree, Pxrand(Scale.major.degrees, inf),
+    \detune, 0.02, // 0 to disable detuning
+    \cfmin, 250,
+    \cfmax, 2500,
+    // \cfhzmin, 2,
+    // \cfhzmax, 4,
+    \rqmin, 0.05,
+    \rqmax, 0.6,
+    \atk, 0.2,
+    \rel, 0.9,
+    \amp, 0.3,
+    \dur, Prand([1, 1/2, 1, 2/3], inf)
+  );
+  // }
+)
+
+~ex5.play;
+~ex5.end(5);

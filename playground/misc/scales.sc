@@ -37,3 +37,9 @@ Scale.minorPentatonic.degrees;
     \hitDur, exprand(0.01, 0.3)
   ]);
 )
+
+// To choose a random note within a scale (say, minor),
+// based on a root note/fundamental frequency (say, middle C, midi note 60),
+// it's frequency can be calculated by doing this:
+(Scale.minor.degrees+60).midicps.choose;
+// To avoid duplicates:
