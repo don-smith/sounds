@@ -28,3 +28,12 @@ Scale.minorPentatonic.degrees;
     \degree, Pseq((0..7) ++ (6..0) ++ [\rest], 1), \dur, 0.25
   ).play;
 )
+
+(
+  ~mp = Scale.minorPentatonic;
+  Synth(\kick, [
+    \freq, ~mp.degreeToFreq(~mp.degrees.choose, 33.midicps, 0),
+    \hitHZ, exprand(800, 1600),
+    \hitDur, exprand(0.01, 0.3)
+  ]);
+)

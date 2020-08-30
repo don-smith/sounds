@@ -14,7 +14,7 @@
 // sound type (click, hush, bass, whoop, tap, zip, sample, etc). 2. Work out
 // sound with expected defaults and a sense of the ranges of the instrument.
 // 3. Create a Pbindef that plays the instruments using the provided args in
-// expected ways ... and perhaps some unexpected ways.
+// expected and unexpected ways.
 
 (
   Env.new(
