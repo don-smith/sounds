@@ -16,4 +16,7 @@ s.scope;
 s.plotTree;
 FreqScope();
 
+s.record;
+s.stopRecording;
+
 s.freeAll;
