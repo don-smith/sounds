@@ -148,3 +148,31 @@ Pbindef(\ex4).stop;
 
 ~ex5.play;
 ~ex5.end(5);
+
+(
+~chords = Pbind(\instrument,\bpfsaw,
+	\dur,Pwhite(4.5,7.0,inf),
+	\scale,[Scale.minor,Scale.major].choose,
+	\degree,Pwrand([[0,2,4],[3,5,7],[4,6,8]],[0.5,0.25,0.25],inf),
+	\cfmin,100,
+	\cfmax,1500,
+	\rqmin,Pexprand(0.02,0.15,inf),
+	\atk,Pwhite(2.0,4.5,inf),
+	\rel,Pwhite(6.5,10.0,inf),
+	// \ldb,6,
+	// \lsf,1000,
+	\octave,Pwrand([4,3,5],[0.6,0.3,0.1],inf),
+	\amp,Pwhite(0.5,1.0),
+	\out,0);
+);
+// monitoring (will also start synths, but not stop them)
+~chords.play;
+~chords.stop;
+
+~chords.pause;
+~chords.resume;
+
+~chords.release;
+~chords.send;
+
+~chords.end;
