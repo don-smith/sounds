@@ -42,6 +42,7 @@
 ~sinfb.play;
 ~sinfb.xmap(\fb,~modulation);
 ~sinfb.xset(\fb,0.1);
+~sinfb.xset(\amp,0.1);
 ~sinfb.release;
 ~sinfb.end;
 ~modulation.end;

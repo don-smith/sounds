@@ -43,3 +43,26 @@ Scale.minorPentatonic.degrees;
 // it's frequency can be calculated by doing this:
 (Scale.minor.degrees+60).midicps.choose;
 // To avoid duplicates:
+
+(
+// expects to be in a ProxySpace
+d=();
+p.clock.tempo = 1;
+d[\scale] = Scale.choose.postln;
+~sinfb.xset(\scale,d[\scale]);
+~sinfb = Pbind(\instrument,\sinfb,\scale,d[\scale],\octave,4,\degree,Pseq((0..d[\scale].degrees.size-1),inf),\dur,0.25,\amp,0.3,\fb,0.6,\rel,0.3);
+~sinfb.play;
+)
+
+(
+// expects to be in a ProxySpace
+~sinfb = Pbind(
+  \instrument,\sinfb,
+  \scale,Scale.chromatic,
+  \root,0,
+  \octave,4,
+  \degree,Pseq([\Em7,\G,\Dsus4,\A7sus4].chordProg,inf).stutter(6),
+  \dur,1,
+  \atk,0.8,\sus,0,\rel,1,\amp,0.3,\fb,0.1
+);
+)

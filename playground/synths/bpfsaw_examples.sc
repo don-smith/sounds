@@ -33,30 +33,31 @@
 )
 
 (
+  ~chrds=(
+    \c1: [23,35,54,63,64],
+    \c2: [45,52,54,59,61,64],
+    \c3: [28,40,47,56,59,63]
+  );
   Pbindef(\ex1,
     \instrument, \bpfsaw,
-    \midinote, Pseq([
-      [23,35,54,63,64],
-      [45,52,54,59,61,64],
-      [28,40,47,56,59,63]
-    ]),
+    \midinote, Pseq([ ~chrds[\c1], ~chrds[\c2], ~chrds[\c3] ], inf),
     \detune, 0.3, // 0 to disable detuning
     \cfmin, Pseq([
-      ([23,35,54,63,64]).midicps*2,
-      ([45,52,54,59,61,64]).midicps*2,
-      ([28,40,47,56,59,63]).midicps*2
-    ]),
+      Prand(~chrds[\c1]).midicps*Pwhite(2,5),
+      Prand(~chrds[\c2]).midicps*Pwhite(2,5),
+      Prand(~chrds[\c3]).midicps*Pwhite(2,5)
+    ], inf),
     \cfmax, Pseq([
-      ([23,35,54,63,64]).midicps*40,
-      ([45,52,54,59,61,64]).midicps*40,
-      ([28,40,47,56,59,63]).midicps*40
-    ]),
+      Prand(~chrds[\c1]).midicps*Pwhite(30,80),
+      Prand(~chrds[\c2]).midicps*Pwhite(30,80),
+      Prand(~chrds[\c3]).midicps*Pwhite(30,80)
+    ], inf),
     \rqmin, 0.05,
     \rqmax, 0.3,
     \amp, 0.6,
     \atk, 2,
-    \rel, 8,
-    \dur, 5,
+    \rel, Pwhite(5,8),
+    \dur, Pwhite(4,6),
   )
 )
 

@@ -1,4 +1,4 @@
-ServerTree.remove(~add_reverb2);
+// ServerTree.remove(~add_reverb2);
 
 (
   SynthDef(\reverb2, {
@@ -16,12 +16,12 @@ ServerTree.remove(~add_reverb2);
   }).add;
 )
 
-(
-s.newBusAllocators;
-~rbus2 = Bus.audio(s,4);
+// (
+// s.newBusAllocators;
+// ~rbus2 = Bus.audio(s,4);
 
-//instantiate reverb and re-instantiate when cmd-period is pressed
-~add_reverb2 = {Synth(\reverb2, [\in, ~rbus2])};
-ServerTree.add(~add_reverb2);
-s.freeAll;
-)
+// //instantiate reverb and re-instantiate when cmd-period is pressed
+// ~add_reverb2 = {Synth(\reverb2, [\in, ~rbus2])};
+// ServerTree.add(~add_reverb2);
+// s.freeAll;
+// )
