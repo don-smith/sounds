@@ -5,7 +5,7 @@ Scale.minorPentatonic.degrees;
   SynthDef(\tone, {
     arg freq=300, amp=0.3, numSegs=4;
     var sig, env;
-    amp = SinOsc.kr({ExpRand(2,4)}!4).range(0,1);
+    // amp = SinOsc.kr({ExpRand(2,4)}!4).range(0,1);
     sig = SinOsc.ar(freq, 1);
     env = EnvGen.kr(Env.new(
       [0]++({exprand(0.1,0.6)}!7)++[0],
@@ -13,10 +13,9 @@ Scale.minorPentatonic.degrees;
       \lin), doneAction:2
     );
     sig = sig * env;
-    sig = sig * amp;
     sig = Splay.ar(sig) * 0.5;
     sig = FreeVerb.ar(sig, 0.1);
-    Out.ar(0, sig);
+    Out.ar(0, sig * amp);
   }).add;
 )
 
@@ -56,13 +55,21 @@ d[\scale] = Scale.choose.postln;
 
 (
 // expects to be in a ProxySpace
-~sinfb = Pbind(
-  \instrument,\sinfb,
-  \scale,Scale.chromatic,
-  \root,0,
-  \octave,4,
-  \degree,Pseq([\Em7,\G,\Dsus4,\A7sus4].chordProg,inf).stutter(6),
-  \dur,1,
-  \atk,0.8,\sus,0,\rel,1,\amp,0.3,\fb,0.1
+~mytone = Pbind(
+  \instrument, \tone,
+  \scale, Scale.chromatic,
+  \root, \G,
+  \octave, 4,
+  \degree, Pseq([\Em7,\G,\Dsus4,\A7sus4].chordProg,inf).stutter(4),
+  \dur, 4,
+  \atk, 0.5,
+  \sus, 0,
+  \rel, 1.5,
+  \amp, 0.5,
+  \fb, 0.1
 );
 )
+
+~mytone.xset(\octave, 4);
+~mytone.xset(\root, 4);
+

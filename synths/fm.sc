@@ -17,14 +17,14 @@ SynthDef(\fm, {
   mod = SinOsc.ar(freq * mRatio, mul:freq * mRatio * iEnv);
   car = SinOsc.ar(freq * cRatio + mod) * env * amp;
   car = PanAz.ar(4, car, pan);
-  Out.ar(out, car);
+  // Out.ar(out, car);
 }).add;
 )
 
 // Example
 
 (
-  Pbindef(\ex1,
+  ~fm1 = Pbind(
     \instrument, \fm,
     \freq, 36.midicps,
     \atk, 0.3,
@@ -35,5 +35,10 @@ SynthDef(\fm, {
   );
 )
 
-Pbindef(\ex1).play;
-Pbindef(\ex1).stop;
+~fm1.quant = 1;
+~fm1.set(\rel, 1);
+~fm1.set(\atk, 0.01);
+~fm1.xset(\amp, 0.4);
+~fm1.set(\freq, 50.midicps);
+~fm1.play;
+~fm1.end;

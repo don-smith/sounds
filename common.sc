@@ -10,9 +10,11 @@ s.quit;
 
 currentEnvironment;
 p = ProxySpace.push(s);
+p.reshaping = \elastic;
 p.makeTempoClock;
-p.clock.tempo = 120/60;
-p.quant = 4;
+p.clock.tempo = 40/60;
+p.fadeTime = 3;
+p.quant = 1;
 
 FreqScope();
 s.plotTree;

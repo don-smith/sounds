@@ -1,5 +1,4 @@
 // Requires a ProxySpace
-// Dependent synths: bpfsaw and sinfb
 
 ("../../synths/sinfb.sc").loadRelative;
 ("../../synths/bpfsaw.sc").loadRelative;
