@@ -3,7 +3,7 @@
 (
   SynthDef(\reverb1, {
     arg in, predelay=0.1, revtime=1.8,
-    lpf=4500, mix=0.15, amp=1, out=~out;
+      lpf=4500, mix=0.15, amp=0.1, out=0;
     var dry, wet, temp, sig;
     dry = In.ar(in,2);
     temp = In.ar(in,2);
