@@ -2,34 +2,14 @@ s.options.sampleRate = 48000.0;
 s.reboot;
 
 (
-  "../../synths/gs.sc".loadRelative;
-  "../../synths/bpfbuf.sc".loadRelative;
+  "../../synths/gs/gs.sc".loadRelative;
+  "../../synths/bpfbuf/bpfbuf.sc".loadRelative;
   d = thisProcess.nowExecutingPath.dirname +/+ "samples";
   b = PathName(d.asAbsolutePath).entries.collect({ |sample|
     Buffer.read(s, sample.fullPath);
   });
   t = TempoClock(0.5);
 )
-
-(
-  // sounds like a horror movie, ouch!
-  ~horrorpads = Pbind(
-    \instrument, \bpfbuf,
-    \buf, b[15],
-    \midinote, Prand(Scale.minor.degrees+92),
-    \scale, Scale.minor,
-    \octave, Prand([3,4,5]),
-    \atk, Pexprand(4,6),
-    \sus, 6,
-    \rel, Pexprand(6,8),
-    \bpfmix, 1,
-    \dur, 4,
-    \rate, Pexprand(0.1,0.4),
-    \pan, Prand([-0.5,0.5]),
-    \amp, 7
-  )
-)
-~horrorpads.play();
 
 (
 r = ([0,2,3,7,9,10].choose + 50).midicps * [2,1,0.5,0.25].choose;
