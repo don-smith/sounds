@@ -10,7 +10,7 @@
       \rqmin, 0.005,
       \rqmax, 0.03,
       \amp, 0.6,
-    ]);
+    ])
   }
 )
 
@@ -28,7 +28,7 @@
       \amp, 0.2,
       \atk, 4,
       \rel, 12,
-    ]);
+    ])
   }
 )
 
@@ -40,7 +40,7 @@
   );
   Pbindef(\ex1,
     \instrument, \bpfsaw,
-    \midinote, Pseq([ ~chrds[\c1], ~chrds[\c2], ~chrds[\c3] ], inf),
+    \midinote, Pseq([~chrds[\c1], ~chrds[\c2], ~chrds[\c3]], inf),
     \detune, 0.3, // 0 to disable detuning
     \cfmin, Pseq([
       Prand(~chrds[\c1]).midicps*Pwhite(2,5),
@@ -54,15 +54,15 @@
     ], inf),
     \rqmin, 0.05,
     \rqmax, 0.3,
-    \amp, 0.6,
+    \amp, 0.3,
     \atk, 2,
     \rel, Pwhite(5,8),
     \dur, Pwhite(4,6),
   )
 )
 
-Pbindef(\ex1).play;
-Pbindef(\ex1).stop;
+Pbindef(\ex1).play
+Pbindef(\ex1).stop
 
 (
   Pbindef(\ex2,
@@ -85,8 +85,8 @@ Pbindef(\ex1).stop;
   )
 )
 
-Pbindef(\ex2).play;
-Pbindef(\ex2).stop;
+Pbindef(\ex2).play
+Pbindef(\ex2).stop
 
 (
   Pbindef(\ex3,
@@ -102,8 +102,8 @@ Pbindef(\ex2).stop;
   )
 )
 
-Pbindef(\ex3).play;
-Pbindef(\ex3).stop;
+Pbindef(\ex3).play
+Pbindef(\ex3).stop
 
 (
   Pbindef(\ex4,
@@ -119,11 +119,11 @@ Pbindef(\ex3).stop;
     \sus, 1,
     \rel, 5,
     \amp, 0.7
-  );
+  )
 )
 
-Pbindef(\ex4).play;
-Pbindef(\ex4).stop;
+Pbindef(\ex4).play
+Pbindef(\ex4).stop
 
 (
   // still a work in progress
@@ -144,29 +144,30 @@ Pbindef(\ex4).stop;
     \rel, 0.9,
     \amp, 0.3,
     \dur, Prand([1, 1/2, 1, 2/3], inf)
-  );
+  )
 )
 
-Pbindef(\ex5).play;
-Pbindef(\ex5).stop;
+Pbindef(\ex5).play
+Pbindef(\ex5).stop
 
 (
-Pbindef(\chords,
-  \instrument,\bpfsaw,
-	\dur,Pwhite(4.5,7.0,inf),
-	\scale,[Scale.minor,Scale.major].choose,
-	\degree,Pwrand([[0,2,4],[3,5,7],[4,6,8]],[0.5,0.25,0.25],inf),
-	\cfmin,100,
-	\cfmax,1500,
-	\rqmin,Pexprand(0.02,0.15,inf),
-	\atk,Pwhite(2.0,4.5,inf),
-	\rel,Pwhite(6.5,10.0,inf),
-	// \ldb,6,
-	// \lsf,1000,
-	\octave,Pwrand([4,3,5],[0.6,0.3,0.1],inf),
-	\amp,Pwhite(0.5,1.0),
-	\out,0);
+  Pbindef(\chords,
+    \instrument,\bpfsaw,
+    \dur,Pwhite(4.5,7.0,inf),
+    \scale,[Scale.minor,Scale.major].choose,
+    \degree,Pwrand([[0,2,4],[3,5,7],[4,6,8]],[0.5,0.25,0.25],inf),
+    \cfmin,100,
+    \cfmax,1500,
+    \rqmin,Pexprand(0.02,0.15,inf),
+    \atk,Pwhite(2.0,4.5,inf),
+    \rel,Pwhite(6.5,10.0,inf),
+    // \ldb,6,
+    // \lsf,1000,
+    \octave,Pwrand([4,3,5],[0.6,0.3,0.1],inf),
+    \amp,Pwhite(0.5,1.0),
+    \out,0
+  )
 )
-// monitoring (will also start synths, but not stop them)
-Pbindef(\chords).play;
-Pbindef(\chords).stop;
+
+Pbindef(\chords).play
+Pbindef(\chords).stop

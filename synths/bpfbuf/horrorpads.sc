@@ -18,7 +18,7 @@
     \dur, 4,
     \rate, Pexprand(0.1,0.4),
     \pan, Prand([-0.5,0.5]),
-    \amp, 7
+    \amp, 25
   )
 )
 

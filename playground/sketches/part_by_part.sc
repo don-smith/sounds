@@ -1,7 +1,7 @@
 // Requires a ProxySpace
 
-("../../synths/sinfb.sc").loadRelative;
-("../../synths/bpfsaw.sc").loadRelative;
+"../../synths/sinfb.sc".loadRelative;
+"../../synths/bpfsaw.sc".loadRelative;
 
 p.fadeTime = 5;
 p.clock.tempo = 110/60;

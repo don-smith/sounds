@@ -22,36 +22,26 @@
 //
 // This is definetly nøt a spønsøred emulatiøn.
 //
+// https://sccode.org/1-5db
+//
 // 25/04/2020
 // Bangkøk, Thailand
 // K.E.
 
-// Initialize 90 randomly created waveforms with increasing complexity
+// Initialize 88 AdventureKid waveforms
 
-~wt = 90.collect({
-  arg i;
+~waveformsPath = thisProcess.nowExecutingPath.dirname +/+ "waveforms";
+~waveforms = PathName(~waveformsPath).entries;
+~buffers = Buffer.allocConsecutive(88, s, 2048);
 
-  //random number of envelope segments
-  var numSegs = i.linexp(0,89,4,64).round;
-
-  Env(
-    //env always begins and ends with zero
-    //inner points are random from -1.0 to 1.0
-    [0]++({1.0.rand}.dup(numSegs-1) * [1,-1]).scramble++[0],
-
-    //greater segment duration variety in higher-index wavetables
-    {exprand(1,i.linexp(0,9,1,50))}.dup(numSegs),
-
-    //low-index wavetables tend to be sinusoidal
-    //high index wavetables tend to have sharp angles and corners
-    {[\sine,0,exprand(1,20) * [1,-1].choose].wchoose([9-i,3,i].normalizeSum)}.dup(numSegs);
-  ).asSignal(1024).asWavetable;
-});
-
-~vbuf = Buffer.allocConsecutive(90, s, 2048);
-~vbuf.do({
+~buffers.do({
   arg buf, i;
-  buf.loadCollection(~wt[i]);
+  f = SoundFile.openRead(~waveforms[i].fullPath);
+  a = FloatArray.newClear(f.numFrames);
+  f.readData(a); f.close;
+  a = a.resamp1(1024).as(Signal);
+  // a = a.as(Signal);
+  buf.loadCollection(a);
 });
 
 // Initialize the synth
@@ -78,7 +68,7 @@ SynthDef.new(\scgazer, {
   ]);
   detuned = Select.ar(sub, [VOsc.ar(wave, freq*detune), VOsc.ar(wave, (freq*0.5)*detune)]);
 
-  wave = ~vbuf[0].bufnum + wave;
+  wave = ~buffers[0].bufnum + wave;
   sig = VOsc.ar(wave, freq);
   sig = XFade2.ar(sig, detuned, mix);
   filter1 = MoogLadder.ar(sig, freq1*lfo1.range(1, depth1), res1);
