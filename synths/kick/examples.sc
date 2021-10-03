@@ -9,13 +9,14 @@
 (
   Pbindef(\ex1,
     \instrument, \kick,
-    \freq, 30.midicps, // A: 21, 33, 45=110, 57, 69, 81, 93
+    \freq, 34.midicps, // A: 21, 33, 45=110, 57, 69, 81, 93
     \hitHz, 600,
     \hitDur, 0.025,
     \amp, 0.5,
-    \dur, 4
+    \dur, 0.5
   );
 )
 
-Pbindef(\ex1).play;
+t = TempoClock(106/60)
+Pbindef(\ex1).play(t, quant:4);
 Pbindef(\ex1).stop;

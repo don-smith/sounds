@@ -9,6 +9,7 @@ b.play;
 b.numFrames;
 b.sampleRate;
 b.numChannels;
+b.free;
 
 (
   Synth(\gs, [\buf, b]);
@@ -25,7 +26,7 @@ b.numChannels;
     \atk, rrand(3,5),
     \sus, 1,
     \rel, rrand(4,6),
-    \pos, rrand(0, 0.8),
+    \pos, rrand(0.1, 0.7),
     \amp, 0.1
   ]);
 )

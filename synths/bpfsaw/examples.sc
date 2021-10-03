@@ -1,4 +1,4 @@
-"./bpfsaw.sc".loadRelative;
+"./bpfsaw2.sc".loadRelative;
 
 (
   10.do{
@@ -54,7 +54,7 @@
     ], inf),
     \rqmin, 0.05,
     \rqmax, 0.3,
-    \amp, 0.3,
+    \amp, 0.5,
     \atk, 2,
     \rel, Pwhite(5,8),
     \dur, Pwhite(4,6),
@@ -89,6 +89,7 @@ Pbindef(\ex2).play
 Pbindef(\ex2).stop
 
 (
+  // Marimba
   Pbindef(\ex3,
     \instrument, \bpfsaw,
     \dur, Pexprand(0.1,1,inf),
@@ -106,6 +107,7 @@ Pbindef(\ex3).play
 Pbindef(\ex3).stop
 
 (
+  // Marimba
   Pbindef(\ex4,
     \instrument, \bpfsaw,
     \dur, Prand([1,0.5], inf),

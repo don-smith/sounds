@@ -40,7 +40,7 @@ SynthDef(\randpanner, {
 
 (
 ~fxGrp.free;
-~fxGrp = Group.new(\panners);
+~fxGrp = Group.new;
 ~circpanner = Synth(\circpanner, [ in: ~circpanbus ], ~fxGrp);
 ~randpanner = Synth(\randpanner, [ in: ~randpanbus ], ~fxGrp);
 )
@@ -65,6 +65,7 @@ SynthDef(\randpanner, {
     \amp, 0.2
 ).play;
 )
+
 (
 ~randpanner.set(\panspeed, 0.4);
 ~marimba = Pbind(
@@ -92,19 +93,20 @@ SynthDef(\randpanner, {
 (
   ~randpanner.set(\panspeed, 0.4);
   ~circpanner.set(\panspeed, 0.1, \pandir, [-1, 1].choose);
-  Synth(\bpfsaw, [
-    freq: 30,
-    detune: 4,
-    // rqmin: 0.005,
-    // rqmax: 0.008,
-    cfmin: 50*2,
-    cfmax: 50*10,
-    atk: 1,
-    sus: 7,
-    rel: 5,
-    amp: 1,
-    out: ~circpanbus,
-  ]);
+  ~other = Pbind(
+    \instrument, \bpfsaw,
+    \freq, 30,
+    \detune, 4,
+    // \rqmin, 0.005,
+    // \rqmax, 0.008,
+    \cfmin, 50*2,
+    \cfmax, 50*10,
+    \atk, 1,
+    \sus, 7,
+    \rel, 5,
+    \amp, 1,
+    \out, ~circpanbus,
+  ).play;
 )
 
 (
