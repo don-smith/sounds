@@ -28,6 +28,8 @@ SynthDef.new(\iter, {
 }).add;
 )
 
+x = Synth(\iter, [\freq, 60]);
+
 (
 SynthDef(\iter2, {|freq=200, dev=1.02|
     var temp, sum;
